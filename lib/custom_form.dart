@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:chitchat/home_screen.dart';
 import 'package:chitchat/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
