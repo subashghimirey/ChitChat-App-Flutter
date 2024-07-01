@@ -26,8 +26,10 @@ void main() async {
             return const SplashScreen();
           }
           if (snapshot.hasData) {
+            print("user logged in");
             return const HomeScreen();
           }
+          print("user not logged in now");
           return const CustomForm();
         },
       ),

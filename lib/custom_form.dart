@@ -5,6 +5,7 @@ import 'package:chitchat/auth.dart';
 import 'package:chitchat/validators/validators.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomForm extends StatefulWidget {
   const CustomForm({super.key});
@@ -16,7 +17,7 @@ class CustomForm extends StatefulWidget {
 class _CustomFormState extends State<CustomForm> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final nameController = TextEditingController();
+  var nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _loginActive = true;
   final auth = Auth();
@@ -83,9 +84,13 @@ class _CustomFormState extends State<CustomForm> {
             await storageRef.putFile(_selectedImage!);
 
             final imageURL = await storageRef.getDownloadURL();
-            print(imageURL);
-            print(imageURL);
-            print(imageURL);
+
+            //store all the data of user at a single place using firestore database
+            FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+              'username': nameController.text,
+              'email': user.email,
+              'image': imageURL
+            });
 
             if (mounted) {
               setState(() {
@@ -93,10 +98,10 @@ class _CustomFormState extends State<CustomForm> {
               });
             }
           }
-          ;
         } catch (e) {
           setState(() {
             errorMessage = "Email Already Used!!";
+            // _isAuthenticating = false;
           });
         }
       }
