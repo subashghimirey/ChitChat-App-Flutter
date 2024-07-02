@@ -24,7 +24,7 @@ class _NewMessageState extends State<NewMessage> {
     }
     _messageController.clear();
     //to close the keyboard
-    FocusScope.of(context).unfocus();
+    // FocusScope.of(context).unfocus();
 
     final userData = await FirebaseFirestore.instance
         .collection('users')
