@@ -3,9 +3,30 @@ import 'package:chitchat/widgets/new_message.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  void setUpPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+
+    fcm.requestPermission();
+    // final token = await fcm.getToken();
+
+    fcm.subscribeToTopic('chat');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setUpPushNotifications();
+  }
 
   @override
   Widget build(BuildContext context) {
