@@ -87,6 +87,7 @@ class _CustomFormState extends State<CustomForm> {
 
             //store all the data of user at a single place using firestore database
             FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+              'id' : user.uid,
               'username': nameController.text,
               'email': user.email,
               'image': imageURL
@@ -249,12 +250,16 @@ class _CustomFormState extends State<CustomForm> {
                                             email: emailController.text,
                                             password: passwordController.text);
 
-                                    if (user != null) {
-                                      Navigator.of(context)
-                                          .pushReplacement(MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HomeScreen(),
-                                      ));
+                                    if (user!.displayName != null) {
+                                      // print(user.displayName);
+                                      // print("logged in");
+                                      if (mounted) {
+                                        Navigator.of(context)
+                                            .pushReplacement(MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomeScreen(),
+                                        ));
+                                      }
                                     } else {
                                       setState(() {
                                         errorMessage =

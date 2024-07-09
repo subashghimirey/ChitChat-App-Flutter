@@ -2,19 +2,27 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class NewMessage extends StatefulWidget {
-  const NewMessage({super.key});
+class SendMessage extends StatefulWidget {
+  const SendMessage({
+    super.key,
+    required this.chatId,
+    required this.receiverId,
+  });
+
+  final String chatId;
+  final String receiverId;
 
   @override
-  State<NewMessage> createState() {
-    return _NewMessageState();
+  State<SendMessage> createState() {
+    return _SendMessageState();
   }
 }
 
-class _NewMessageState extends State<NewMessage> {
+class _SendMessageState extends State<SendMessage> {
   final _messageController = TextEditingController();
 
   final user = FirebaseAuth.instance.currentUser!;
@@ -30,6 +38,27 @@ class _NewMessageState extends State<NewMessage> {
     setState(() {
       pickedImage = File(image.path);
     });
+
+    String imageName = DateTime.now().millisecondsSinceEpoch.toString();
+
+    final storageRef = FirebaseStorage.instance
+        .ref()
+        .child('user_uploaded_images')
+        .child(imageName);
+
+    await storageRef.putFile(pickedImage!);
+    String imageUrl = await storageRef.getDownloadURL();
+
+    FirebaseFirestore.instance
+        .collection('chats')
+        .doc(widget.chatId)
+        .collection('messages')
+        .add({
+      'imageUrl': imageUrl,
+      'timestamp': Timestamp.now(),
+      'senderId': user.uid,
+      'receiverId': widget.receiverId,
+    });
   }
 
   void onSend() async {
@@ -39,18 +68,18 @@ class _NewMessageState extends State<NewMessage> {
       return;
     }
     _messageController.clear();
+    // Close the keyboard
+    FocusScope.of(context).unfocus();
 
-    final userData = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get();
-
-    FirebaseFirestore.instance.collection("chat").add({
+    FirebaseFirestore.instance
+        .collection('chats')
+        .doc(widget.chatId)
+        .collection('messages')
+        .add({
       'text': userMessage,
-      'created_at': Timestamp.now(),
-      'userId': user.uid,
-      'userName': userData.data()!['username'],
-      'userImage': userData.data()!['image'],
+      'timestamp': Timestamp.now(),
+      'senderId': user.uid,
+      'receiverId': widget.receiverId,
     });
   }
 
@@ -75,7 +104,12 @@ class _NewMessageState extends State<NewMessage> {
                       borderRadius: BorderRadius.circular(15))),
             ),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.image)),
+          IconButton(
+              onPressed: pickImage,
+              icon: const Icon(
+                Icons.image,
+                size: 30,
+              )),
           IconButton(onPressed: onSend, icon: const Icon(Icons.send))
         ],
       ),

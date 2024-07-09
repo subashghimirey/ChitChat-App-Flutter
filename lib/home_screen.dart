@@ -1,8 +1,7 @@
-import 'package:chitchat/widgets/chat_messages.dart';
-import 'package:chitchat/widgets/new_message.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:chitchat/auth.dart';
+import 'package:chitchat/custom_form.dart';
+import 'package:chitchat/widgets/members.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final auth = Auth();
+
   void setUpPushNotifications() async {
     final fcm = FirebaseMessaging.instance;
 
@@ -33,26 +34,31 @@ class _HomeScreenState extends State<HomeScreen> {
     // User? user = auth.currentUser;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "ChitChat",
-            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
-          ),
-          backgroundColor: const Color.fromARGB(255, 48, 222, 112),
-          actions: [
-            IconButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  print("signed Out");
-                },
-                icon: const Icon(Icons.exit_to_app))
-          ], // Customize AppBar color if needed
+      appBar: AppBar(
+        title: const Text(
+          "ChitChat",
+          style: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
         ),
-        body: const Column(
-          children: [
-            Expanded(child: ChatMessages()),
-            NewMessage(),
-          ],
-        ));
+        backgroundColor: const Color.fromARGB(255, 48, 222, 112),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await auth.signOut();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const CustomForm(),
+                ));
+                // print("signed Out");
+              },
+              icon: const Icon(Icons.exit_to_app))
+        ], // Customize AppBar color if needed
+      ),
+      body: const Column(
+        children: [
+          // Expanded(child: ChatMessages()),
+          // NewMessage(),
+          Expanded(child: Members())
+        ],
+      ),
+    );
   }
 }

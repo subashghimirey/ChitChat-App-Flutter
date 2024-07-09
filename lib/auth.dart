@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class Auth {
   var auth = FirebaseAuth.instance;
 
@@ -14,7 +13,6 @@ class Auth {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      
       user = userCredential.user;
       user!.updateDisplayName(name);
     } on FirebaseAuthException catch (err) {
@@ -36,5 +34,9 @@ class Auth {
       throw Exception(err);
     }
     return user;
+  }
+
+  Future<void> signOut() async {
+    return await auth.signOut();
   }
 }

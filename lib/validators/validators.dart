@@ -27,5 +27,6 @@ class Validators {
     } else if (name.length < 3) {
       return "Nice name, but should be at least 3 chars long";
     }
+    return null;
   }
 }

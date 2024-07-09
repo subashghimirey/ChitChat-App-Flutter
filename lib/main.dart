@@ -13,6 +13,7 @@ void main() async {
   );
 
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       useMaterial3: true,
@@ -20,14 +21,22 @@ void main() async {
     home: Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: auth.authStateChanges(),
         builder: (context, snapshot) {
+          
+          var user = snapshot.data;
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SplashScreen();
           }
-          if (snapshot.hasData) {
-            print("user logged in");
+          if (user!=null) {
             return const HomeScreen();
+          }
+          if (!snapshot.hasData) {
+            return const CustomForm();
+          }
+
+          if (snapshot.data!.isAnonymous) {
+            return const CustomForm();
           }
           print("user not logged in now");
           return const CustomForm();
