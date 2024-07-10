@@ -84,7 +84,7 @@ Ensure that you complete the setup for Firebase services as follows:
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-github-username/chitchat.git
+   git clone https://github.com/subashghimirey/ChitChat-App-Flutter
 
 2. **Navigate to the project directory:**
    ```sh
