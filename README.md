@@ -18,13 +18,13 @@ ChitChat is a real-time chat application built with Flutter and Firebase. It inc
 ## Screenshots
 
 ### Login Page
-<img src="https://github.com/subashghimirey/ChitChat-App-Flutter-/assets/88834868/3a5a140f-6eb5-44d9-92b0-23a17b57b88b" alt="login page" height="200" width="300">
+<img src="https://github.com/subashghimirey/ChitChat-App-Flutter-/assets/88834868/3a5a140f-6eb5-44d9-92b0-23a17b57b88b" alt="login page" height="200" width="100">
 
 ### Chat Screen
-<img src="https://github.com/subashghimirey/ChitChat-App-Flutter-/assets/88834868/bfabb1ac-b154-4ad4-bc48-c8b2ceec6d80" alt="chat screen" height="200" width="300">
+<img src="https://github.com/subashghimirey/ChitChat-App-Flutter-/assets/88834868/bfabb1ac-b154-4ad4-bc48-c8b2ceec6d80" alt="chat screen" height="200" width="100">
 
 ### Inbox
-<img src="https://github.com/subashghimirey/ChitChat-App-Flutter-/assets/88834868/132337a3-6b0f-4453-9171-1867e9661271" alt="image sharing" height="200" width="300">
+<img src="https://github.com/subashghimirey/ChitChat-App-Flutter-/assets/88834868/132337a3-6b0f-4453-9171-1867e9661271" alt="image sharing" height="200" width="100">
 
 ## Getting Started
 
